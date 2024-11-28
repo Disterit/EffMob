@@ -8,6 +8,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	SongTable  = "songs"
+	GroupTable = "groups"
+)
+
 type Config struct {
 	Host     string
 	Port     string
@@ -18,12 +23,11 @@ type Config struct {
 }
 
 func Connection(config Config) *sqlx.DB {
-	const op = "pkg.repository.Connection"
 
 	db, err := sqlx.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		config.Host, config.Port, config.Username, config.Password, config.Database, config.SSLMode))
 	if err != nil {
-		logger.Log.Error("error to connect db", op, err.Error())
+		logger.Log.Error("error to connect db", err.Error())
 		return nil
 	}
 
