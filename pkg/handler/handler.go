@@ -18,16 +18,16 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	song := router.Group("/song")
 	{
-		song.POST("")       // добавление песни
-		song.GET("")        // получение всех песен
-		song.GET("/:id")    // получение песни по id
-		song.PUT("/:id")    // обновление песни по id
-		song.DELETE("/:id") // удаление песни по id
+		song.POST("/", h.CreateSong)      // добавление песни
+		song.GET("/", h.GetAllSong)       // получение всех песен
+		song.GET("/:id", h.GetSongById)   // получение песни по id
+		song.PUT("/:id", h.UpdateSong)    // обновление песни по id
+		song.DELETE("/:id", h.DeleteSong) // удаление песни по id
 
 		verse := song.Group("/:id/verse/:verse")
 		{
-			verse.GET("") // получение 1 или более куплетов с параметром limit который указывает на колличество куплетов которое будет получено после указанного
-			verse.PUT("") //обновление куплета по id
+			verse.GET("", h.GetVerses)   // получение 1 или более куплетов с параметром limit который указывает на колличество куплетов которое будет получено после указанного
+			verse.PUT("", h.UpdateVerse) //обновление куплета по id
 		}
 	}
 
