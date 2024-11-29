@@ -16,6 +16,15 @@ func NewHandler(service *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
+	group := router.Group("/group")
+	{
+		group.POST("/")   // добавить группу
+		group.GET("/")    // получить всей библиотеки песен
+		group.GET("/:id") // получить все песни группы по id
+		group.PUT("/")    // обновить название группы
+		group.DELETE("/") // удалить группу (и все ее песни)
+	}
+
 	song := router.Group("/song")
 	{
 		song.POST("/", h.CreateSong)      // добавление песни
@@ -26,8 +35,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 		verse := song.Group("/:id/verse/:verse")
 		{
-			verse.GET("", h.GetVerses)   // получение 1 или более куплетов с параметром limit который указывает на колличество куплетов которое будет получено после указанного
-			verse.PUT("", h.UpdateVerse) //обновление куплета по id
+			verse.GET("", h.GetVerses) // получение 1 или более куплетов с параметром limit который указывает на колличество куплетов которое будет получено после указанного
 		}
 	}
 

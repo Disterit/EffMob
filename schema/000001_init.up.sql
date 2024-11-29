@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS songs (
     song_name varchar(255) not null ,
     text_song text ,
     link varchar(255),
-    release_date timestamp,
+    release_date date,
     unique (group_id, song_name)
 );
