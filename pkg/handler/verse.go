@@ -38,5 +38,3 @@ func (h *Handler) GetVerses(c *gin.Context) {
 
 	c.JSON(http.StatusOK, verses)
 }
-
-func (h *Handler) UpdateVerse(c *gin.Context) {}

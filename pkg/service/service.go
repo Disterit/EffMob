@@ -2,10 +2,13 @@ package service
 
 import (
 	"EffMob/models"
+	"EffMob/pkg/handler"
 	"EffMob/pkg/repositroy"
 )
 
 type Group interface {
+	CreateGroup(groupName string) (int, error)
+	GetAllLibrary() (handler.OutputLibrary, error)
 }
 
 type Song interface {
@@ -21,12 +24,14 @@ type Verse interface {
 }
 
 type Service struct {
+	Group
 	Song
 	Verse
 }
 
 func NewService(repo *repositroy.Repository) *Service {
 	return &Service{
+		Group: NewGroupService(repo),
 		Song:  NewSongService(repo),
 		Verse: NewVerseService(repo),
 	}

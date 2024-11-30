@@ -18,11 +18,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	group := router.Group("/group")
 	{
-		group.POST("/")   // добавить группу
-		group.GET("/")    // получить всей библиотеки песен
-		group.GET("/:id") // получить все песни группы по id
-		group.PUT("/")    // обновить название группы
-		group.DELETE("/") // удалить группу (и все ее песни)
+		group.POST("/", h.CreateGroup)           // добавить группу
+		group.GET("/", h.GetAllLibrary)          // получить всей библиотеки песен
+		group.GET("/:id", h.GetAllSongGroupById) // получить все песни группы по id
+		group.PUT("/", h.UpdateGroup)            // обновить название группы
+		group.DELETE("/", h.DeleteGroup)         // удалить группу (и все ее песни)
 	}
 
 	song := router.Group("/song")
