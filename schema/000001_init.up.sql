@@ -13,3 +13,9 @@ CREATE TABLE IF NOT EXISTS songs (
     release_date date,
     unique (group_id, song_name)
 );
+
+
+
+CREATE INDEX idx_songs_group_id ON songs(group_id);
+CREATE INDEX idx_groups_group_name ON groups(group_name);
+CREATE INDEX idx_songs_group_id_release_date ON songs(group_id, release_date);

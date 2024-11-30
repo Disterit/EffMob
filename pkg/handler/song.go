@@ -4,6 +4,7 @@ import (
 	"EffMob/logger"
 	"EffMob/models"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +22,14 @@ func (h *Handler) CreateSong(c *gin.Context) {
 		return
 	}
 
-	id, err := h.service.CreateSong(input.GroupName, input.SongName)
+	songInfo, err := GetSongInfo(viper.GetString("apiUrl"), input.GroupName, input.SongName)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "failed to fetch song info: "+err.Error())
+		logger.Log.Error("error fetching song info", err.Error())
+		return
+	}
+
+	id, err := h.service.CreateSong(input.GroupName, input.SongName, songInfo)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		logger.Log.Error("error to add song in repository", err.Error())
@@ -31,6 +39,23 @@ func (h *Handler) CreateSong(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
 	})
+}
+
+type SongDetail struct {
+	ReleaseDate string `json:"releaseDate"` // Дата выхода песни
+	Text        string `json:"text"`
+	Link        string `json:"link"`
+}
+
+func (h *Handler) ExternalApi(c *gin.Context) {
+
+	response := SongDetail{
+		ReleaseDate: "16.07.2006",
+		Text:        "Ooh baby, don't you know I suffer?\nOoh baby, can you hear me moan?\nYou caught me under false pretenses\nHow long before you let me go?\n\nOoh\nYou set my soul alight\nOoh\nYou set my soul alight",
+		Link:        "https://www.youtube.com/watch?v=Xsp3_a-PMTw",
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *Handler) GetAllSong(c *gin.Context) {

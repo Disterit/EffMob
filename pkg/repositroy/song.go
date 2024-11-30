@@ -18,7 +18,7 @@ func NewSongRepository(db *sqlx.DB) *SongRepository {
 	return &SongRepository{db: db}
 }
 
-func (r *SongRepository) CreateSong(groupName, songName string) (int, error) {
+func (r *SongRepository) CreateSong(groupName, songName string, songInfo *models.SongInfo) (int, error) {
 	var id int
 
 	tx, err := r.db.Begin()
@@ -45,8 +45,10 @@ func (r *SongRepository) CreateSong(groupName, songName string) (int, error) {
 		}
 	}
 
-	query = fmt.Sprintf(`INSERT INTO %s (group_id, song_name) VALUES ($1, $2) RETURNING id`, SongTable)
-	res = tx.QueryRow(query, id, songName)
+	query = fmt.Sprintf(`INSERT INTO %s (group_id, song_name, text_song, link, release_date) 
+								VALUES ($1, $2, $3, $4, TO_DATE($5, 'DD.MM.YYYY')) RETURNING id`, SongTable)
+
+	res = tx.QueryRow(query, id, songName, songInfo.Text, songInfo.Link, songInfo.ReleaseDate)
 	if err = res.Scan(&id); err != nil {
 		tx.Rollback()
 		logger.Log.Error("error to insert song or conflict resolution", err.Error())

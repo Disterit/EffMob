@@ -1,4 +1,5 @@
 port: ":8080"
+apiUrl: "http://localhost:8080/externalApi"
 db:
   host: "localhost"
   port: "5438"
