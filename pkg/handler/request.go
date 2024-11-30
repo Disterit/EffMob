@@ -24,8 +24,6 @@ func GetSongInfo(externalApiUrl, group, song string) (*models.SongInfo, error) {
 	}
 	defer resp.Body.Close()
 
-	fmt.Println("response Status:", resp.Status)
-
 	if resp.StatusCode != http.StatusOK {
 		if resp.StatusCode == http.StatusBadRequest {
 			return nil, ErrBadRequest
