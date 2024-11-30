@@ -8,6 +8,17 @@ import (
 	"strconv"
 )
 
+// @Summary CreateGroup
+// @Tags Group
+// @Description Create a new group
+// @Accept json
+// @Produce json
+// @Param input body models.Group true "Group details"
+// @Success 200 {object} map[string]interface{} "ID of the created group"
+// @Failure 400 {object} errorResponse "Invalid input"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /group [post]
+
 func (h *Handler) CreateGroup(c *gin.Context) {
 	var input models.Group
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -28,6 +39,14 @@ func (h *Handler) CreateGroup(c *gin.Context) {
 	})
 }
 
+// @Summary GetAllLibrary
+// @Tags Group
+// @Description Get all groups in the library
+// @Produce json
+// @Success 200 {array} map[string][]models.Song "map of group"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /group [get]
+
 func (h *Handler) GetAllLibrary(c *gin.Context) {
 	library, err := h.service.Group.GetAllLibrary()
 	if err != nil {
@@ -38,6 +57,16 @@ func (h *Handler) GetAllLibrary(c *gin.Context) {
 
 	c.JSON(http.StatusOK, library)
 }
+
+// @Summary GetAllSongGroupById
+// @Tags Group
+// @Description Get all songs in a group by group ID
+// @Produce json
+// @Param id path int true "Group ID"
+// @Success 200 {array} map[string][]models.Song "Group and they song"
+// @Failure 400 {object} errorResponse "Invalid ID format"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /group/{id} [get]
 
 func (h *Handler) GetAllSongGroupById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
@@ -56,6 +85,18 @@ func (h *Handler) GetAllSongGroupById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, songs)
 }
+
+// @Summary UpdateGroup
+// @Tags Group
+// @Description Update an existing group
+// @Accept json
+// @Produce json
+// @Param id path int true "Group ID"
+// @Param input body models.Group true "Updated group details"
+// @Success 200 {object} StatusResponse "Status of the update operation"
+// @Failure 400 {object} errorResponse "Invalid input or group not found"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /group/{id} [put]
 
 func (h *Handler) UpdateGroup(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
@@ -83,6 +124,17 @@ func (h *Handler) UpdateGroup(c *gin.Context) {
 		Status: "ok",
 	})
 }
+
+// @Summary DeleteGroup
+// @Tags Group
+// @Description Delete a group by its ID
+// @Produce json
+// @Param id path int true "Group ID"
+// @Success 200 {object} StatusResponse "Status of the delete operation"
+// @Failure 400 {object} errorResponse "Invalid ID format"
+// @Failure 404 {object} errorResponse "Group not found"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /group/{id} [delete]
 
 func (h *Handler) DeleteGroup(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))

@@ -14,6 +14,17 @@ type AddSong struct {
 	SongName  string `json:"song" binding:"required"`
 }
 
+// @Summary CreateSong
+// @Tags Song
+// @Description Create a song with request to an external API and save enriched data to the database
+// @Accept json
+// @Produce json
+// @Param input body AddSong true "Song information (group and song)"
+// @Success 200 {object} map[string]interface{} "Song created successfully"
+// @Failure 400 {object} errorResponse "Invalid input data"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /song [post]
+
 func (h *Handler) CreateSong(c *gin.Context) {
 	var input AddSong
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -58,6 +69,17 @@ func (h *Handler) ExternalApi(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// @Summary GetSongById
+// @Tags Song
+// @Description Get a song by its ID
+// @Produce json
+// @Param id path int true "Song ID"
+// @Success 200 {object} models.Song
+// @Failure 400 {object} errorResponse "Invalid ID provided"
+// @Failure 404 {object} errorResponse "Song not found"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /song [get]
+
 func (h *Handler) GetAllSong(c *gin.Context) {
 	songs, err := h.service.GetAllSongs()
 	if err != nil {
@@ -68,6 +90,16 @@ func (h *Handler) GetAllSong(c *gin.Context) {
 
 	c.JSON(http.StatusOK, songs)
 }
+
+// @Summary GetSongById
+// @Tags Song
+// @Description Get detailed information about a song by its ID
+// @Produce json
+// @Param id path int true "Song ID"
+// @Success 200 {object} models.Song "Detailed song information"
+// @Failure 400 {object} errorResponse "Invalid ID format"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /song/{id} [get]
 
 func (h *Handler) GetSongById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
@@ -86,6 +118,18 @@ func (h *Handler) GetSongById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, song)
 }
+
+// @Summary UpdateSong
+// @Tags Song
+// @Description Update information about an existing song
+// @Accept json
+// @Produce json
+// @Param id path int true "Song ID"
+// @Param input body models.UpdateSong true "Updated song data"
+// @Success 200 {object} StatusResponse "Status of the update operation"
+// @Failure 400 {object} errorResponse "Invalid ID format or bad request data"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /song/{id} [patch]
 
 func (h *Handler) UpdateSong(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
@@ -113,6 +157,16 @@ func (h *Handler) UpdateSong(c *gin.Context) {
 		Status: "ok",
 	})
 }
+
+// @Summary DeleteSong
+// @Tags Song
+// @Description Delete a song by its ID
+// @Produce json
+// @Param id path int true "Song ID"
+// @Success 200 {object} StatusResponse "Status of the delete operation"
+// @Failure 400 {object} errorResponse "Invalid ID format"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /song/{id} [delete]
 
 func (h *Handler) DeleteSong(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))

@@ -7,6 +7,18 @@ import (
 	"strconv"
 )
 
+// @Summary GetVerses
+// @Tags Song
+// @Description Get verses for a song by song ID and verse ID with optional limit
+// @Produce json
+// @Param id path int true "Song ID"
+// @Param verse path int true "Verse ID"
+// @Param limit query int false "Limit for the number of verses to fetch"
+// @Success 200 {array} map[string]string "List of verses"
+// @Failure 400 {object} errorResponse "Invalid input"
+// @Failure 500 {object} errorResponse "Internal server error"
+// @Router /song/{id}/verse/{verse} [get]
+
 func (h *Handler) GetVerses(c *gin.Context) {
 	songId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

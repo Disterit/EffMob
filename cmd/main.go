@@ -11,6 +11,13 @@ import (
 	"os"
 )
 
+// @title Effective Mobile API
+// @version 1.0
+// @description Api server for test example
+
+// @host localhost:8080
+// @BasePath /
+
 func main() {
 	if err := godotenv.Load(); err != nil {
 		logger.Log.Error("Error loading .env file")
