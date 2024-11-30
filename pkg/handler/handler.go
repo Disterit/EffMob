@@ -3,10 +3,6 @@ package handler
 import (
 	"EffMob/pkg/service"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-
-	_ "github.com/Disterit/EffMob/docs"
 )
 
 type Handler struct {
@@ -19,9 +15,6 @@ func NewHandler(service *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.GET("/externalApi/info", h.ExternalApi)
 
 	group := router.Group("/group")
 	{

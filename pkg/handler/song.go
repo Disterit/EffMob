@@ -52,23 +52,6 @@ func (h *Handler) CreateSong(c *gin.Context) {
 	})
 }
 
-type SongDetail struct {
-	ReleaseDate string `json:"releaseDate"` // Дата выхода песни
-	Text        string `json:"text"`
-	Link        string `json:"link"`
-}
-
-func (h *Handler) ExternalApi(c *gin.Context) {
-
-	response := SongDetail{
-		ReleaseDate: "16.07.2006",
-		Text:        "Ooh baby, don't you know I suffer?\nOoh baby, can you hear me moan?\nYou caught me under false pretenses\nHow long before you let me go?\n\nOoh\nYou set my soul alight\nOoh\nYou set my soul alight",
-		Link:        "https://www.youtube.com/watch?v=Xsp3_a-PMTw",
-	}
-
-	c.JSON(http.StatusOK, response)
-}
-
 // @Summary GetSongById
 // @Tags Song
 // @Description Get a song by its ID
