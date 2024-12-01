@@ -46,7 +46,7 @@ EffMob — это REST api для тестового задания
 
 ## API Эндпоинты
 
-###song
+##song
 
 1. **CreateSong**
    - **Endpoint:** `POST /song`
@@ -91,7 +91,7 @@ EffMob — это REST api для тестового задания
      - `400 Bad Request`, ошибка запроса
      - `500 Status Internal Server`, ошибка сервера
     
-###group
+##group
 
 1. **CreateGroup**
    - **Endpoint:** `POST /group`
@@ -132,7 +132,7 @@ EffMob — это REST api для тестового задания
      - `400 Bad Request`, ошибка запроса
      - `500 Status Internal Server`, ошибка сервера
     
-###verse
+##verse
 
 1. **GetVerses**
    - **Endpoint:** `GET /song/:id/verse/:verse&limit=?`
