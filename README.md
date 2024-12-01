@@ -46,6 +46,8 @@ EffMob — это REST api для тестового задания
 
 ## API Эндпоинты
 
+###song
+
 1. **CreateSong**
    - **Endpoint:** `POST /song`
    - **Тело запроса:** JSON-объект, содержащий:
@@ -86,6 +88,57 @@ EffMob — это REST api для тестового задания
    - **Эндпоинт:** `DELETE /song/:id`
    - **Ответ:** 
      - `200 OK` StatusResponse {Status: "ok"}
+     - `400 Bad Request`, ошибка запроса
+     - `500 Status Internal Server`, ошибка сервера
+    
+###group
+
+1. **CreateGroup**
+   - **Endpoint:** `POST /group`
+   - **Тело запроса:** JSON-объект, содержащий:
+     - `name`: Имя артиста/музыкальной группы
+   - **Ответ:** 
+     - `200 OK` map[string]interface{} id added group
+     - `400 Bad Request`, ошибка запроса
+     - `500 Status Internal Server`, ошибка сервера
+
+2. **GetAllLibrary**
+   - **Эндпоинт:** `GET /group`
+   - **Ответ:** 
+     - `200 OK` map[string][]models.Song map of groups
+     - `400 Bad Request`, ошибка запроса
+     - `500 Status Internal Server`, ошибка сервера
+
+3. **GetAllSongGroupById**
+   - **Эндпоинт:** `GET /group/:id`
+   - **Ответ:** 
+     - `200 OK` map[string][]models.Song group and they song
+     - `400 Bad Request`, ошибка запроса
+     - `500 Status Internal Server`, ошибка сервера
+
+4. **UpdateGroup**
+   - **Эндпоинт:** `PATCH /group/:id`
+   - **Тело запроса:** JSON-объект, содержащий:
+     - `name`: Имя артиста/музыкальной группы
+   - **Ответ:** 
+     - `200 OK` StatusResponse {Status: "ok"}
+     - `400 Bad Request`, ошибка запроса
+     - `500 Status Internal Server`, ошибка сервера
+   
+5. **DeleteGroup**
+   - **Эндпоинт:** `DELETE /group/:id`
+   - **Ответ:** 
+     - `200 OK` StatusResponse {Status: "ok"}
+     - `400 Bad Request`, ошибка запроса
+     - `500 Status Internal Server`, ошибка сервера
+    
+###verse
+
+1. **GetVerses**
+   - **Endpoint:** `GET /song/:id/verse/:verse&limit=?`
+   - **Тело запроса:** JSON-объект, содержащий:
+   - **Ответ:** 
+     - `200 OK` map[string]string list of verses
      - `400 Bad Request`, ошибка запроса
      - `500 Status Internal Server`, ошибка сервера
 
