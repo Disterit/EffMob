@@ -9,6 +9,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 	"os"
+
+	_ "EffMob/docs"
 )
 
 // @title Effective Mobile API

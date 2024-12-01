@@ -1,4 +1,385 @@
+basePath: /
+definitions:
+  handler.AddSong:
+    properties:
+      group:
+        type: string
+      song:
+        type: string
+    required:
+    - group
+    - song
+    type: object
+  handler.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.StatusResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  models.Group:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.Song:
+    properties:
+      group_id:
+        type: integer
+      id:
+        type: integer
+      link:
+        type: string
+      name:
+        type: string
+      release_date:
+        type: string
+      text:
+        type: string
+    type: object
+  models.UpdateSong:
+    properties:
+      link:
+        type: string
+      name:
+        type: string
+      release_date:
+        type: string
+      text:
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact: {}
-paths: {}
+  description: Api server for test example
+  title: Effective Mobile API
+  version: "1.0"
+paths:
+  /group:
+    get:
+      description: Get all groups in the library
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: map of group
+          schema:
+            additionalProperties:
+              items:
+                $ref: '#/definitions/models.Song'
+              type: array
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: GetAllLibrary
+      tags:
+      - Group
+    post:
+      consumes:
+      - application/json
+      description: Create a new group
+      parameters:
+      - description: Group details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ID of the created group
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: CreateGroup
+      tags:
+      - Group
+  /group/{id}:
+    delete:
+      description: Delete a group by its ID
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Status of the delete operation
+          schema:
+            $ref: '#/definitions/handler.StatusResponse'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: DeleteGroup
+      tags:
+      - Group
+    get:
+      description: Get all songs in a group by group ID
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Group and they song
+          schema:
+            items:
+              additionalProperties:
+                items:
+                  $ref: '#/definitions/models.Song'
+                type: array
+              type: object
+            type: array
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: GetAllSongGroupById
+      tags:
+      - Group
+    patch:
+      consumes:
+      - application/json
+      description: Update an existing group
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated group details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Status of the update operation
+          schema:
+            $ref: '#/definitions/handler.StatusResponse'
+        "400":
+          description: Invalid input or group not found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: UpdateGroup
+      tags:
+      - Group
+  /song:
+    get:
+      description: Retrieve a list of all songs
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of songs
+          schema:
+            items:
+              $ref: '#/definitions/models.Song'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Get all songs
+      tags:
+      - Song
+    post:
+      consumes:
+      - application/json
+      description: Add a new song to the database
+      parameters:
+      - description: Song data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AddSong'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Song created successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Create a new song
+      tags:
+      - Song
+  /song/{id}:
+    delete:
+      description: Delete a song from the database by its ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete status
+          schema:
+            $ref: '#/definitions/handler.StatusResponse'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Delete song by ID
+      tags:
+      - Song
+    get:
+      description: Retrieve a song by its ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Song details
+          schema:
+            $ref: '#/definitions/models.Song'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Get song by ID
+      tags:
+      - Song
+    patch:
+      consumes:
+      - application/json
+      description: Update an existing song by its ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated song data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateSong'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update status
+          schema:
+            $ref: '#/definitions/handler.StatusResponse'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Update song by ID
+      tags:
+      - Song
+  /song/{id}/verse/{verse}:
+    get:
+      description: Get verses for a song by song ID and verse ID with optional limit
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Verse ID
+        in: path
+        name: verse
+        required: true
+        type: integer
+      - description: Limit for the number of verses to fetch
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of verses
+          schema:
+            items:
+              additionalProperties:
+                type: string
+              type: object
+            type: array
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: GetVerses
+      tags:
+      - Song
 swagger: "2.0"
