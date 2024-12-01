@@ -35,12 +35,12 @@ EffMob — это REST api для тестового задания
 
 ### Установка
 
-1. Клонируйте репозиторий:
+1. Клонировать репозиторий:
    ```bash
    git clone https://github.com/Disterit/EffMob.git
    cd EffMob
 
-2. Запуск приложения:
+2. Запустить приложение:
    ```bash
    docker-compose up --build
 
