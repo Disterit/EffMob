@@ -5,6 +5,8 @@ import (
 	"EffMob/pkg/repositroy"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Group interface {
 	CreateGroup(groupName string) (int, error)
 	GetAllLibrary() (map[string][]models.Song, error)
